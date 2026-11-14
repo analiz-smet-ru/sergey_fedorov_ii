@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Иван Иванов — инженер-сметчик | Составление смет онлайн</title>
+  <meta name="description" content="Профессиональный инженер-сметчик. Составление смет на строительство, ремонт, реконструкцию. Работаю удалённо по всей России." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== ПЕРЕМЕННЫЕ (меняйте палитру здесь) ===== */
+    :root {
+      --blue-900: #0A2540;
+      --blue-600: #2563EB;
+      --blue-500: #3B82F6;
+      --blue-50:  #EEF2F7;
+      --white:    #FFFFFF;
+      --gray-700: #334155;
+      --gray-500: #475569;
+      --gray-300: #CBD5E1;
+      --gray-100: #F1F5F9;
+      --shadow-sm: 0 1px 2px rgba(10,37,64,.06);
+      --shadow-md: 0 8px 24px rgba(10,37,64,.08);
+      --radius: 12px;
+      --container: 1160px;
+    }
+
+    /* ===== БАЗА ===== */
+    *,*::before,*::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-700);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--blue-600); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--blue-900); }
+    h1,h2,h3,h4 { color: var(--blue-900); margin: 0 0 .5em; line-height: 1.2; font-weight: 700; }
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; letter-spacing: -.02em; }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); letter-spacing: -.01em; }
+    h3 { font-size: 1.2rem; }
+    p  { margin: 0 0 1em; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section { padding: 72px 0; }
+    section:nth-of-type(even) { background: var(--blue-50); }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--gray-500);
+      max-width: 640px;
+      margin: 0 auto 48px;
+    }
+
+    /* ===== КНОПКИ ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--blue-600);
+      color: var(--white);
+    }
+    .btn-primary:hover {
+      background: var(--blue-900);
+      color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--blue-900);
+      border-color: var(--blue-900);
+    }
+    .btn-outline:hover {
+      background: var(--blue-900);
+      color: var(--white);
+    }
+
+    /* ===== ШАПКА ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--blue-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-dot {
+      width: 10px; height: 10px;
+      background: var(--blue-600);
+      border-radius: 50%;
+    }
+    .nav { display: none; gap: 32px; }
+    .nav a {
+      color: var(--gray-700);
+      font-weight: 500;
+      font-size: .95rem;
+    }
+    .nav a:hover { color: var(--blue-600); }
+    .header-cta { display: none; }
+
+    .burger {
+      width: 40px; height: 40px;
+      background: none; border: none;
+      cursor: pointer;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      gap: 5px;
+    }
+    .burger span {
+      width: 22px; height: 2px;
+      background: var(--blue-900);
+      transition: .3s;
+    }
+    .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      background: var(--white);
+      padding: 32px 20px;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 99;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a {
+      color: var(--blue-900);
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 0 96px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(37,99,235,.08), transparent 50%),
+        var(--white);
+    }
+    .hero-inner {
+      display: grid;
+      gap: 40px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: #22C55E;
+      border-radius: 50%;
+    }
+    .hero h1 span { color: var(--blue-600); }
+    .hero-text {
+      font-size: 1.1rem;
+      color: var(--gray-500);
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-photo {
+      aspect-ratio: 1/1;
+      max-width: 360px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--blue-50), var(--white));
+      border-radius: 24px;
+      border: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-300);
+      font-size: .9rem;
+      overflow: hidden;
+      /* Замените на: background: url('photo.jpg') center/cover; */
+    }
+
+    /* ===== СТАТИСТИКА ===== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+      max-width: 560px;
+    }
+    .stat {
+      background: var(--white);
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-100);
+    }
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--blue-900);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: .85rem;
+      color: var(--gray-500);
+    }
+
+    /* ===== О СЕБЕ ===== */
+    .about-grid {
+      display: grid;
+      gap: 40px;
+      align-items: center;
+    }
+    .about-text p { font-size: 1.05rem; }
+    .about-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+    }
+    .about-list li {
+      padding: 10px 0 10px 32px;
+      position: relative;
+      color: var(--gray-700);
+    }
+    .about-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 16px;
+      width: 18px; height: 18px;
+      background: var(--blue-600);
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 12px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* ===== УСЛУГИ ===== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--white);
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-100);
+      transition: all .25s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue-500);
+    }
+    .service-icon {
+      width: 48px; height: 48px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .service-icon svg { width: 24px; height: 24px; }
+    .service-card h3 { margin-bottom: 8px; }
+    .service-card p { color: var(--gray-500); margin: 0; font-size: .95rem; }
+    .service-price {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-100);
+      font-weight: 600;
+      color: var(--blue-900);
+      font-size: .95rem;
+    }
+
+    /* ===== ЭТАПЫ ===== */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      counter-reset: step;
+    }
+    .step {
+      position: relative;
+      padding: 28px 28px 28px 80px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-100);
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      left: 24px; top: 28px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--blue-600);
+    }
+    .step h3 { margin-bottom: 6px; }
+    .step p { margin: 0; color: var(--gray-500); font-size: .95rem; }
+
+    /* ===== ПРЕИМУЩЕСТВА ===== */
+    .advantages {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .advantage {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-100);
+    }
+    .advantage-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .advantage-icon svg { width: 22px; height: 22px; }
+    .advantage h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .advantage p { margin: 0; color: var(--gray-500); font-size: .92rem; }
+
+    /* ===== FAQ ===== */
+    .faq {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-900);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: inherit;
+    }
+    .faq-q::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--blue-600);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+      padding: 0 24px;
+      color: var(--gray-500);
+    }
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding: 0 24px 20px;
+    }
+
+    /* ===== КОНТАКТЫ ===== */
+    .contacts-grid {
+      display: grid;
+      gap: 32px;
+    }
+    .contact-methods {
+      display: grid;
+      gap: 12px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      transition: all .2s;
+    }
+    .contact-item:hover {
+      border-color: var(--blue-500);
+      transform: translateX(4px);
+    }
+    .contact-item-icon {
+      width: 40px; height: 40px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-item-icon svg { width: 20px; height: 20px; }
+    .contact-item-label {
+      font-size: .8rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .contact-item-value {
+      color: var(--blue-900);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* ===== ФОРМА ===== */
+    .form {
+      background: var(--white);
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-100);
+    }
+    .form h3 { margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--gray-700);
+      margin-bottom: 6px;
+    }
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+      background: var(--white);
+      color: var(--gray-700);
+    }
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+    }
+    .form-textarea { min-height: 110px; resize: vertical; }
+    .form-note {
+      font-size: .8rem;
+      color: var(--gray-500);
+      margin-top: 12px;
+      text-align: center;
+    }
+    .form .btn { width: 100%; margin-top: 8px; }
+
+    /* ===== ФУТЕР ===== */
+    .footer {
+      background: var(--blue-900);
+      color: rgba(255,255,255,.7);
+      padding: 40px 0;
+      text-align: center;
+      font-size: .9rem;
+    }
+    .footer a { color: rgba(255,255,255,.9); }
+    .footer a:hover { color: var(--white); }
+    .footer-logo {
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    /* ===== АДАПТИВ: ПЛАНШЕТ ===== */
+    @media (min-width: 768px) {
+      section { padding: 96px 0; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .advantages { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(4, 1fr); }
+      .contacts-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr 1.2fr; gap: 60px; }
+    }
+
+    /* ===== АДАПТИВ: ДЕСКТОП ===== */
+    @media (min-width: 1024px) {
+      .nav { display: flex; }
+      .header-cta { display: inline-flex; }
+      .burger { display: none; }
+      .hero-inner { grid-template-columns: 1.2fr 1fr; gap: 60px; }
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+      .steps { grid-template-columns: repeat(4, 1fr); }
+      .advantages { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= ШАПКА ========= -->
+<header class="header">
+  <div class="container header-inner">
+    <a href="#" class="logo">
+      <span class="logo-dot"></span>
+      И.И. Сметчик
+    </a>
+    <nav class="nav">
+      <a href="#about">Обо мне</a>
+      <a href="#services">Услуги</a>
+      <a href="#process">Как работаю</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a href="#contacts" class="btn btn-primary header-cta">Заказать смету</a>
+    <button class="burger" id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="#about">Обо мне</a>
+    <a href="#services">Услуги</a>
+    <a href="#process">Как работаю</a>
+    <a href="#faq">Вопросы</a>
+    <a href="#contacts">Контакты</a>
+    <a href="#contacts" class="btn btn-primary" style="margin-top:12px;">Заказать смету</a>
+  </nav>
+</header>
+
+<!-- ========= HERO ========= -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <span class="hero-badge">Принимаю заказы</span>
+      <h1>Инженер-сметчик <span>с опытом 10+ лет</span></h1>
+      <p class="hero-text">
+        Составляю сметы на строительство, ремонт и реконструкцию.
+        Работаю в ГРАНД-Смете, Smeta.ru и других. Удалённо по всей России —
+        быстро, точно, с пояснениями для заказчика.
+      </p>
+      <div class="hero-buttons">
+        <a href="#contacts" class="btn btn-primary">Рассчитать смету</a>
+        <a href="#services" class="btn btn-outline">Смотреть услуги</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">лет в сметном деле</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">350+</div>
+          <div class="stat-label">готовых смет</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24 ч</div>
+          <div class="stat-label">средний срок</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">проходят экспертизу</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <!-- Замените на <img src="photo.jpg" alt="Иван Иванов"> -->
+      Ваше фото 360×360
+    </div>
+  </div>
+</section>
+
+<!-- ========= О СЕБЕ ========= -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="hero-photo" style="max-width:320px;">
+        <!-- Второе фото или иллюстрация -->
+        Фото / иллюстрация
+      </div>
+      <div class="about-text">
+        <h2 class="section-title" style="text-align:left;">Немного обо мне</h2>
+        <p>
+          Меня зовут <strong>Иван Иванов</strong>. Я профессиональный инженер-сметчик
+          с профильным образованием и опытом работы в строительстве, капитальном
+          ремонте и реконструкции объектов разного масштаба.
+        </p>
+        <p>
+          За годы практики я составил сотни смет для частных заказчиков,
+          подрядных организаций и бюджетных учреждений. Мои сметы успешно
+          проходят государственную и негосударственную экспертизу.
+        </p>
+        <ul class="about-list">
+          <li>Высшее строительное образование (ПГС)</li>
+          <li>Член НОПРИЗ / ассоциации сметчиков</li>
+          <li>Работа по 44-ФЗ, 223-ФЗ, ФЕР, ТЕР, ГЭСН</li>
+          <li>Аттестат Минстроя (при наличии — укажите)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= УСЛУГИ ========= -->
+<section id="services">
+  <div class="container">
+    <h2 class="section-title">Услуги и цены</h2>
+    <p class="section-subtitle">
+      Работаю с объектами любой сложности. Стоимость зависит от объёма
+      работ — точную цену назову после изучения проекта.
+    </p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Локальные сметы</h3>
+        <p>Составление локальных сметных расчётов на отдельные виды работ (СМР, пусконаладка, оборудование).</p>
+        <div class="service-price">от 1 500 ₽</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Объектные и сводные сметы</h3>
+        <p>Сборка объектных смет, сводных сметных расчётов (ССР), ведомостей стоимости.</p>
+        <div class="service-price">от 5 000 ₽</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Сметы на ремонт и отделку</h3>
+        <p>Сметы для квартир, офисов, коммерческих помещений. Точный расчёт черновых и чистовых работ.</p>
+        <div class="service-price">от 3 000 ₽</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Экспертиза смет</h3>
+        <p>Проверка готовых смет, выявление завышений, ошибок в расценках и объёмах. Письменное заключение.</p>
+        <div class="service-price">от 4 000 ₽</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+        </div>
+        <h3>КС-2, КС-3, справка КС-8</h3>
+        <p>Оформление актов выполненных работ, справок о стоимости, ведение исполнительной документации.</p>
+        <div class="service-price">от 2 000 ₽</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Сопровождение стройки</h3>
+        <p>Полное сметное сопровождение объекта: от проекта до финального КС-11. Абонентская плата.</p>
+        <div class="service-price">от 25 000 ₽/мес</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= ЭТАПЫ РАБОТЫ ========= -->
+<section id="process">
+  <div class="container">
+    <h2 class="section-title">Как мы работаем</h2>
+    <p class="section-subtitle">Прозрачный процесс от первого письма до готовой сметы.</p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>Заявка</h3>
+        <p>Вы оставляете заявку и присылаете проектную документацию (чертежи, ТЗ, ведомости).</p>
+      </div>
+      <div class="step">
+        <h3>Оценка</h3>
+        <p>В течение 2–4 часов оцениваю объём, называю точную стоимость и сроки.</p>
+      </div>
+      <div class="step">
+        <h3>Работа</h3>
+        <p>Составляю смету в согласованной программе. На связи, отвечаю на вопросы.</p>
+      </div>
+      <div class="step">
+        <h3>Результат</h3>
+        <p>Передаю готовую смету в Excel и PDF. При необходимости — бесплатные правки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= ПРЕИМУЩЕСТВА ========= -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Почему выбирают меня</h2>
+    <p class="section-subtitle">Коротко о том, что отличает мою работу.</p>
+
+    <div class="advantages">
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h3>Точно в срок</h3>
+          <p>Соблюдаю дедлайны. Если срок срочный — обсудим индивидуально.</p>
+        </div>
+      </div>
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <h3>Актуальные базы</h3>
+          <p>Работаю с ФЕР/ТЕР/ГЭСН в текущих индексах Минстроя.</p>
+        </div>
+      </div>
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.5 0 2.91.37 4.15 1.02"/></svg>
+        </div>
+        <div>
+          <h3>Прохождение экспертизы</h3>
+          <p>98% моих смет проходят с первого раза. Правки — бесплатно.</p>
+        </div>
+      </div>
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3>Всегда на связи</h3>
+          <p>Отвечаю в мессенджерах в течение часа в рабочее время.</p>
+        </div>
+      </div>
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div>
+          <h3>Договор и чек</h3>
+          <p>Работаю официально: договор, акт, оплата на счёт или как самозанятый.</p>
+        </div>
+      </div>
+      <div class="advantage">
+        <div class="advantage-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h3>Честные цены</h3>
+          <p>Без скрытых доплат. Стоимость фиксируется до начала работы.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= FAQ ========= -->
+<section id="faq">
+  <div class="container">
+    <h2 class="section-title">Частые вопросы</h2>
+    <p class="section-subtitle">Если не нашли ответа — напишите, отвечу лично.</p>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q">Какие документы нужны для составления сметы?</button>
+        <div class="faq-a"><p>Обычно достаточно проектной документации: чертежи (АР, КР, ОВ, ВК и т.д.), ведомости объёмов работ, техническое задание. Если проекта нет — помогу составить смету по укрупнённым показателям.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">В каких программах вы работаете?</button>
+        <div class="faq-a"><p>Гранд-Смета, WinRICE, Smeta.ru. По запросу выдаю результат в Excel и PDF. Формат обсуждаем заранее.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Как происходит оплата?</button>
+        <div class="faq-a"><p>50% предоплата, 50% — после сдачи готовой сметы. Оплата на карту, расчётный счёт или как самозанятый с выдачей чека. Для юрлиц — работа по договору с актом.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Делаете ли срочные сметы?</button>
+        <div class="faq-a"><p>Да, срок от 24 часов. За срочность — наценка 30–50% в зависимости от объёма и сложности.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Работаете ли с регионами?</button>
+        <div class="faq-a"><p>Да, работаю удалённо по всей России. Использую территориальные базы (ТЕР) нужного региона и актуальные индексы Минстроя.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= КОНТАКТЫ ========= -->
+<section id="contacts">
+  <div class="container">
+    <h2 class="section-title">Связаться со мной</h2>
+    <p class="section-subtitle">Выберите удобный способ или оставьте заявку — отвечу в течение часа.</p>
+
+    <div class="contacts-grid">
+      <div class="contact-methods">
+        <a href="tel:+79001234567" class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Телефон</div>
+            <div class="contact-item-value">+7 (900) 123-45-67</div>
+          </div>
+        </a>
+
+        <a href="mailto:mail@example.ru" class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-value">mail@example.ru</div>
+          </div>
+        </a>
+
+        <a href="https://t.me/username" target="_blank" rel="noopener" class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.95 8.2l-1.98 9.33c-.15.67-.54.83-1.09.52l-3.02-2.23-1.46 1.4c-.16.16-.3.3-.61.3l.22-3.06 5.58-5.04c.24-.22-.05-.34-.37-.13l-6.9 4.34-2.97-.93c-.65-.2-.66-.65.13-.96l11.6-4.47c.54-.2 1.01.13.87.93z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Telegram</div>
+            <div class="contact-item-value">@username</div>
+          </div>
+        </a>
+
+        <a href="https://wa.me/79001234567" target="_blank" rel="noopener" class="contact-item">
+          <div class="contact-item-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">WhatsApp</div>
+            <div class="contact-item-value">+7 (900) 123-45-67</div>
+          </div>
+        </a>
+      </div>
+
+      <form class="form" onsubmit="return submitForm(event)">
+        <h3>Оставить заявку</h3>
+        <div class="form-group">
+          <label class="form-label" for="name">Ваше имя</label>
+          <input class="form-input" type="text" id="name" name="name" required placeholder="Иван">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Телефон или Telegram</label>
+          <input class="form-input" type="text" id="phone" name="phone" required placeholder="+7 ... или @ник">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">Кратко о задаче</label>
+          <textarea class="form-textarea" id="message" name="message" placeholder="Нужна смета на ремонт офиса 120 м²..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить заявку</button>
+        <p class="form-note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========= ФУТЕР ========= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">И.И. Сметчик</div>
+    <p>© 2026 Инженер-сметчик Иван Иванов. Все права защищены.</p>
+    <p>
+      <a href="tel:+79001234567">+7 (900) 123-45-67</a> ·
+      <a href="mailto:mail@example.ru">mail@example.ru</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Бургер-меню
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+  // Закрытие меню при клике по ссылке
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      burger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    });
+  });
+
+  // FAQ-аккордеон
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Простейшая отправка формы (замените на свой бэкенд / Formspree / Telegram-бот)
+  function submitForm(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    // Пример: отправка в Telegram-бот
+    // fetch('https://api.telegram.org/bot<TOKEN>/sendMessage', {...})
+    alert('Спасибо! Ваша заявка отправлена. Я свяжусь с вами в течение часа.');
+    e.target.reset();
+    return false;
+  }
+</script>
+
+</body>
+</html>
